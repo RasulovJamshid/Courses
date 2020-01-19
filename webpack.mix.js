@@ -1,5 +1,8 @@
 const mix = require('laravel-mix');
-
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
+// const CompressionPlugin = require('compression-webpack-plugin');
+const path =require('path');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,14 +14,23 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+mix.react('resources/js/app.js', 'public/js');
 
 
 
 mix.webpackConfig({
       devServer: {
       historyApiFallback: true
+    },
+    plugins: [
+        // new BundleAnalyzerPlugin(),
+      new AntdDayjsWebpackPlugin(),
+      // new CompressionPlugin()
+    ],
+    resolve: {
+      alias: {
+        "@ant-design/icons/lib/dist$": path.resolve(__dirname, './resources/js/icons/icons.js')
+      }
     }
       
   });

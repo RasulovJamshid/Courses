@@ -18,17 +18,18 @@ class CreateCoursesTable extends Migration
             $table->string('cost');
             // $table->string('location');
             $table->string('title');
-            $table->string('description');
-            // $table->string('file');
+            $table->text('description');
+            $table->string('imageRef');
             $table->string('url');
-            $table->json('type');
+            $table->string('type');
+            $table->integer('typeS');
             $table->string('tNumber');
             $table->increments('id');
             $table->timestamps();
             $table->boolean('recomended');
-            $table->string('brief');
-            $table->json('regionType');
-            
+            $table->text('brief');
+            $table->string('regionType');
+            $table->integer('regionTypeS');
             
         });
     }

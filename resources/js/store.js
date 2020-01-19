@@ -33,7 +33,7 @@ const collapsed=(state=false,action)=>{
     }
   }
 
-  const search=(state=" ",action)=>{
+  const search=(state="language",action)=>{
     switch (action.type) {
         case 'search':
             return action.payload;
@@ -49,14 +49,50 @@ const collapsed=(state=false,action)=>{
     }
   }
 
+  const searchtype=(state="a",action)=>{
+    switch (action.type) {
+        case 'searchtype':
+            return action.payload;
+        default:
+            return state;
+    }
+  }
+  //Action
+  export const searchtypeAct=(response)=>{
+    return{
+        type:'searchtype',
+        payload:response
+    }
+  }
+  
+  const searchPlace=(state="main",action)=>{
+    switch (action.type) {
+        case 'searchplace':
+            return action.payload;
+        default:
+            return state;
+    }
+  }
+  //Action
+  export const searchPlaceAct=(response)=>{
+    return{
+        type:'searchplace',
+        payload:response
+    }
+  }
+
   const initialState={
     collapsed:false,
     id:1,
-    search:' ',
+    search:'language',
+    searchtype:"a",
+    searchPlace:"main",
   }
   const allReducers=combineReducers({
     collapsed,
     id,
     search,
+    searchtype,
+    searchPlace,
   })
   export const store = createStore(allReducers,initialState);

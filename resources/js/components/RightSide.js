@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import {Menu,Layout} from 'antd';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+// import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 
 const { Header, Content, Sider } = Layout;
 

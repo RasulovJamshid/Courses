@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import {Layout} from 'antd';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
+import Layout from 'antd/es/layout';
+
 
 const {  Footer } = Layout;
 
@@ -12,7 +11,14 @@ const {  Footer } = Layout;
 
       render(){
         return(
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ 
+            textAlign: 'center',
+            height: "200px",
+            marginTop: 200,
+            bottom: 0,
+            
+            
+         }}>COURSES Design ©2019 Created by COURSES UED</Footer>
         )
       }
     }

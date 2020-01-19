@@ -15,3 +15,5 @@
 Route::view('/{path?}', 'app')
      ->where('path', '.*')
      ->name('react');
+// Route::view('/', 'welcome');
+Route::post('image','CourseController@imageUpload');     

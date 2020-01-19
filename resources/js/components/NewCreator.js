@@ -1,16 +1,28 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import { Upload, Icon, message ,Input,Divider,Cascader,Button,Checkbox} from 'antd';
+import 'antd/lib/button/style/index.css';
+import 'antd/lib/checkbox/style/index.css';
+import 'antd/lib/cascader/style/index.css';
+import 'antd/lib/divider/style/index.css';
+import 'antd/lib/input/style/index.css';
+import 'antd/lib/message/style/index.css';
+// import 'antd/lib/upload/style/index.css';
+
+import Button from 'antd/es/button';
+import Checkbox from 'antd/es/checkbox';
+import Cascader from 'antd/es/cascader';
+import Divider from 'antd/es/divider';
+import Input from 'antd/es/input';
+import message from 'antd/es/message';
 import { withRouter } from "react-router";
-import ReactMapGL from "react-map-gl";
 import {options,regionOptions} from '../options';
-const { Dragger } = Upload;
 const {TextArea}=Input;
 
 const props = {
   name: 'file',
-  multiple: true,
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  multiple: false,
+  action: '/image',
+           
   onChange(info) {
     const { status } = info.file;
     if (status !== 'uploading') {
@@ -44,21 +56,39 @@ class NewCreator extends Component {
           tNumber:'a',
           url:'a',
           type:'a',
-          cost:'a',
-          regionType:'a',
+          cost:'200000',
+          regionType:'Ташкент',
           recomended:false,
           brief:'a',
-          errors: []
+          typeS:1,
+          regionTypeS:1,
+          errors: [],
+          image:"",
+          imageRef:""
         }
-        this.handleFieldChange = this.handleFieldChange.bind(this)
-        this.handleTypeChange = this.handleTypeChange.bind(this)
-        this.handleCreateNewProject = this.handleCreateNewProject.bind(this)
-        
+        this.handleFieldChange = this.handleFieldChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.handleCreateNewProject = this.handleCreateNewProject.bind(this);
+        this.handleUpload = this.handleUpload.bind(this);
+        this.handleImage = this.handleImage.bind(this);
       }
 
+      handleUpload(){
+        const data = new FormData()
+        data.append("file",this.state.image);
+        axios.post('/image',data)
+        .then(response=>{message.success("uploaded");console.log(response.message);})
+        .catch(error=>message.error(`please check file format and size :${error.message}`));
+      }
+        
       handleFieldChange (event) {
         this.setState({
           [event.target.name]: event.target.value
+        })
+      }
+      handleImage (event) {
+        this.setState({
+          image: event.target.files[0]
         })
       }
       handleFieldCheck (e) {
@@ -69,13 +99,15 @@ class NewCreator extends Component {
       handleTypeChange (value,selected) {
         console.log(value)
         this.setState({
-          type: value
+          type: value[0],
+          typeS:parseInt(value[1]),
         })
       }
       handleRegionChange (value,selected) {
         console.log(value)
         this.setState({
-          regionType: value
+          regionType: "Ташкент",
+          regionTypeS:parseInt(value[0])
         })
       }
 
@@ -89,22 +121,24 @@ class NewCreator extends Component {
             name:this.state.name,
             description:this.state.description,
             type:this.state.type,
+            typeS:this.state.typeS,
             title:this.state.title,
             tNumber:this.state.tNumber,
             url:this.state.url,
             cost:this.state.cost,
             brief:this.state.brief,
             recomended:this.state.recomended,
-            regionType:this.state.regionType
+            regionType:this.state.regionType,
+            regionTypeS:this.state.regionTypeS,
+            imageRef:this.state.imageRef
         }
         )
           .then(response => {
-            console.log(response);
             // redirect to the homepage
             history.push('/');
           })
           .catch(error => {
-            console.log(error.response)
+            message.error(error.response)
             })
       }
 
@@ -184,16 +218,13 @@ class NewCreator extends Component {
 
              <Divider orientation="left">Image of Center</Divider>
              <div style={{ margin: 16 }}>
-            <Dragger name="file" {...props}>
-                <p className="ant-upload-drag-icon">
-                  <Icon type="inbox" />
-                </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                <p className="ant-upload-hint">
-                  Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                  band files
-                </p>
-            </Dragger>
+            
+            <form>
+              <input  onChange={this.handleImage} type="file" id="image" name="image" />
+              <label for="image">Choose a file</label>
+              <h6>format:jpg,jpeg,png max:2MB</h6>
+            <Button onClick={this.handleUpload}>Upload </Button>
+            </form>
             </div>
             <Divider orientation="left">Type</Divider>
               <div style={{ margin: 16 }}>
@@ -206,13 +237,7 @@ class NewCreator extends Component {
                 </div>
 
             <Divider orientation="left">Point a map</Divider>
-            <div style={{justifyContent:"center",margin:16,alignItems:'center',display: 'flex'}}>
-            <ReactMapGL name="location"
-                        mapboxApiAccessToken='pk.eyJ1IjoiamFtc2hpZHIiLCJhIjoiY2syenphYTVrMGtraTNjbW1vNG00NGswMSJ9.XiP2WhMZReZ8NlZS4YcREA'
-                      {...this.state.viewport}
-        onViewportChange={(viewport) => this.setState({viewport})}
-      />
-            </div>
+            
             
             <Button onClick={this.handleCreateNewProject} type="primary" block>
             SUBMIT

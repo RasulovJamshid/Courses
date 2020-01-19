@@ -1,11 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import {Menu,Layout,Typography,Input} from 'antd';
-import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
-import axios from 'axios';
+import 'antd/lib/input/style/index.css';
+import 'antd/lib/layout/style/index.css';
+import 'antd/lib/button/style/index.css';
 
-const {Title} =Typography;
-const { Header, Content, Sider } = Layout;
+import Button from 'antd/es/button';
+import Layout from 'antd/es/layout';
+import Input from 'antd/es/input';
+import {connect} from "react-redux";
+import {searchAct,searchPlaceAct} from "../store"
+
+const { Header } = Layout;
 const {Search }=Input;
 
 
@@ -22,9 +26,12 @@ const {Search }=Input;
 
       render(){
         return(
-          <Header style={{alignItems:"center", background: '#fff ',display:"flex", padding: 0,borderBottomColor:'#1890ff',borderBottomWidth:1,borderBottomStyle:'solid' }} >
+          <Header style={{background: '#fff ',display:"flex", padding: 0 ,boxShadow:"0px 1px 20px 10px"}} >
             
-            <Search style={{justifySelf:"center",display:"flex",marginLeft:20,width:"20vw"}} placeholder="search" onSearch={value => this.props.search(value)} enterButton /> 
+            <Search style={{maxWidth:400,padding:15,marginInline:20,}} placeholder="поиск курсов" enterButton="поиск"
+            
+             onSearch={value => {this.props.search(value);this.props.searchType()}}  />
+            
             {/* <Search placeholder="input search text" onSearch={value => console.log(value)} enterButton /> */}
             </Header>
 
@@ -32,9 +39,11 @@ const {Search }=Input;
       }
     }
 
-    const mapDispatchToProps=(dispatch,ownProps)=>(
-      {
-        search:()=>dispatch(searchAct(ownProps.value))
+    const mapDispatchToProps=(dispatch)=>{
+     
+      return { 
+        search:(e)=>dispatch(searchAct(e)),
+        searchType:()=>dispatch(searchPlaceAct("head"))
       }
-    )
-    export default HeaderNav;
+    }
+    export default connect(null,mapDispatchToProps)(HeaderNav);
